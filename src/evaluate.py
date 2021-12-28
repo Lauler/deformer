@@ -23,7 +23,7 @@ def predict(model, valid_loader):
     preds_dem_list = torch.empty(0).to(device)
     with torch.no_grad():
         for i, batch in enumerate(tqdm(valid_loader)):
-            batch = {key: torch.squeeze(batch[key]) for key in batch.keys()}
+            batch = {key: torch.squeeze(batch[key]) for key in batch.keys() if key != "sentence"}
             input_ids = batch["input_ids"].to(device)
             labels = batch["labels"].to(device).view(-1)
             attention_mask = batch["attention_mask"].to(device)

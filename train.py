@@ -31,7 +31,12 @@ valid_loader = DataLoader(valid_dataset, batch_size=20, shuffle=False)
 optim = AdamW(model.parameters(), lr=1e-6)
 loss_fn = torch.nn.CrossEntropyLoss(reduction="none")
 scheduler = torch.optim.lr_scheduler.OneCycleLR(
-    optim, max_lr=1.5e-6, epochs=2, steps_per_epoch=len(train_loader), pct_start=0.1
+    optim,
+    max_lr=1e-6,
+    epochs=2,
+    steps_per_epoch=len(train_loader),
+    pct_start=0.05,
+    last_epoch=47000,
 )
 
 log_list = []
@@ -41,7 +46,7 @@ for epoch in range(2):
     for i, batch in enumerate(tqdm(train_loader)):
         optim.zero_grad()
         # [batch_size, 1, seq_len] -> [batch_size, seq_len]
-        batch = {key: torch.squeeze(batch[key]) for key in batch.keys()}
+        batch = {key: torch.squeeze(batch[key]) for key in batch.keys() if key != "sentence"}
         input_ids = batch["input_ids"].to(device)
         attention_mask = batch["attention_mask"].to(device)
         labels = batch["labels"].to(device)
@@ -71,13 +76,13 @@ for epoch in range(2):
         scheduler.step()
 
 
-# model.load_state_dict(torch.load("checkpoints/demformer.pt"))
+# model.load_state_dict(torch.load("checkpoints/deformer.pt"))
 model.eval()
 
 res = predict(model, valid_loader)
 
-sum(res[0]) / len(res[0])  # de accuracy
-sum(res[1]) / len(res[1])  # dem accuracy
+print(sum(res[0]) / len(res[0]))  # de accuracy
+print(sum(res[1]) / len(res[1]))  # dem accuracy
 
 tokenizer = AutoTokenizer.from_pretrained("KB/bert-base-swedish-cased")
 model.config.id2label = {"0": "ord", "1": "DE", "2": "DEM"}  # uncased version
