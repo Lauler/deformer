@@ -17,22 +17,23 @@ DeFormer has been trained on sentences from the European Parliament and Swedish 
 Only sentences containing `de` or `dem` -- or both -- were kept in the creation of the training dataset. In the table below, we present summary statistics of sentences that were kept after filtering the data.
 
 
-| Source                                                                                        | Sentences   |  # de   | # dem   | de/dem ratio |
-| -----------                                                                                   | ----------- | ------- | ------- | ------------ |
-| [Europaparl sv.txt.gz](https://opus.nlpl.eu/download.php?f=Europarl/v8/mono/sv.txt.gz)        | 495836      |  461305 | 53726   | 8.57x        |
-| [Wikimedia sv.txt.gz](https://opus.nlpl.eu/download.php?f=wikimedia/v20210402/mono/sv.txt.gz) | 626486      |  598371 | 38649   | 15.48x       |
-
+| Source                                                                                           | Sentences   |  # de       | # dem       | de/dem ratio |
+| -----------                                                                                      | ----------- | -------     | -------     | ------------ |
+| [Europaparl sv.txt.gz](https://opus.nlpl.eu/download.php?f=Europarl/v8/mono/sv.txt.gz)           | 500660      | 465977      | 54331       | 8.57x        |
+| [JRC-Acquis raw.sv.gz](https://opus.nlpl.eu/download.php?f=JRC-Acquis/mono/JRC-Acquis.raw.sv.gz) | 417951      | 408576      | 17028       | 23.99x       |
+| [Wikimedia sv.txt.gz](https://opus.nlpl.eu/download.php?f=wikimedia/v20210402/mono/sv.txt.gz)    | 630601      | 602393      | 38852       | 15.48x       |
+| **Total**                                                                                        | **1549212** | **1476946** | **110211**  | **13.40x**   |
 
 In the training, random substitutions were introduced where `de` or `dem` were excahnged against the opposite word. The DeFormer model was then challenged to classify which of the previously mentioned 3 categories a word belonged to. 
 
 ## Accuracy 
 
-DeFormer was evaluated on a validation set of 5000 sentences from the same data sources. Random substitutions were introduced here as well to challenge the model. The table below displays the (high) accuracy of the model. A significant proportion of the erroneous predictions were in the form of "`de/dem som`-constructions. These are ambiguous cases in Swedish and are not viewed as errors, since [both forms are equally accepted](https://www4.isof.se/cgi-bin/srfl/visasvar.py?sok=dem%20som&svar=79718&log_id=705355). 
+DeFormer was evaluated on a held out validation set of 31200 sentences from the above data sources. Random substitutions were introduced here as well to challenge the model. The table below displays the accuracy of the model. A significant proportion of the erroneous predictions were in the form of "`de/dem som`-constructions. These are ambiguous cases in Swedish and are not viewed as errors, since [both forms are equally accepted](https://www4.isof.se/cgi-bin/srfl/visasvar.py?sok=dem%20som&svar=79718&log_id=705355). 
 
 |             | Accuracy    |
 | ----------- | ----------- |
-| de          | 99.5\%      |
-| dem         | 96.6\%      |
+| de          | 99.9\%      |
+| dem         | 98.6\%      |
 
 
 ## Instructions to train the model

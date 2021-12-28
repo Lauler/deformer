@@ -9,12 +9,12 @@ df_euro = pd.read_csv("data/europarl_sv.txt.gz", sep="\\n", header=None, engine=
 df_euro = df_euro.rename(columns={0: "text"})
 df_euro["data_source"] = "europarl"
 
-df_jrc = pd.read_csv("data/jrc_sv.raw.gz", sep="\\n", header=None, engine="python")
+df_jrc = pd.read_csv("data/jrc_sv.txt.gz", sep="\\n", header=None, engine="python")
 df_jrc = df_jrc.rename(columns={0: "text"})
 df_jrc["data_source"] = "jrc"
 
 # Combine datasets
-df = pd.concat([df_wiki, df_euro]).reset_index()
+df = pd.concat([df_wiki, df_euro, df_jrc]).reset_index()
 df = df.rename(columns={"index": "sentence_id"})
 
 # Detect de/dem.
